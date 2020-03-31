@@ -6,9 +6,18 @@ This is a collection of lab exercises and homework assignments for the course
 [**Faculty of Engineering**][nu-eng], [**Naresuan University**][nu],
 Phitsanulok, Thailand (http://www.ecpe.nu.ac.th/suradet/).
 
+The compiler is implemented in an incremental fashion.  It is implemented
+backward from the target code generation to the lexical analysis.  Then, the
+compiler is enhanced in a forward manner.  I choose this approach because
+* it is easier and takes less time to develop the later phases of the compiler
+than to develop the earlier phase of the compiler
+* it supports the incremental approach vey well.
+* it allows the learners to see the whole picture of the compiler in a short
+time maner.
+
 The sample codes are implemented in the ObjFPC (Object Pascal, Free Pascal)
 dialect of the Pascal programming language.  The rationales behind the decision
-are
+are:
 * By being unfamiliar to the sample implementation language, the learners may
 try to do the exercises by themselves instead of just reading the codes from
 the samples.
