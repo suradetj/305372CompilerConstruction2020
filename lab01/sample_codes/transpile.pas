@@ -20,6 +20,10 @@ Var
     markPos         : Integer;
     newStart        : Integer;
 
+
+{---------------------------------------------------------------------------}
+{ Show the program usage.                                                   }
+{---------------------------------------------------------------------------}
 Procedure ShowUsage;
 Begin
     WriteLn('A minimal transpiler (source-to-source compiler)');
@@ -27,6 +31,10 @@ Begin
     WriteLn('   e.g. >transpile sample.src template.cs target.cs')
 End;
 
+
+{---------------------------------------------------------------------------}
+{ Handle the command line parameters.                                       }
+{---------------------------------------------------------------------------}
 Procedure HandleCommandLineParameters;
 Begin
     If ParamCount <> 3 Then
@@ -40,25 +48,33 @@ Begin
 End;
 
 
-{***************************************************************************}
-{ Main program                                                              }
-{***************************************************************************}
+{---------------------------------------------------------------------------}
+{ Handle the input stream.                                                  }
+{---------------------------------------------------------------------------}
+Procedure HandleInputStream;
 Begin
-
-    HandleCommandLineParameters;
-
     AssignFile(srcFile, srcFileName);
-    AssignFile(tplFile, tplFileName);
-    AssignFile(tgtFile, tgtFileName);
     Reset(srcFile);
-    Reset(tplFile);
-    ReWrite(tgtFile);
 
     { Read only one number from the source file}
     Read(srcFile, numstr);
 
     CloseFile(srcFile);
+End;
 
+
+{---------------------------------------------------------------------------}
+{ Generate the target codes.                                                }
+{---------------------------------------------------------------------------}
+Procedure GenerateTargetCode;
+Begin
+    AssignFile(tplFile, tplFileName);
+    AssignFile(tgtFile, tgtFileName);
+    Reset(tplFile);
+    ReWrite(tgtFile);
+
+    { Substitute the number mark in the template with the number from the   }
+    { stream.                                                               }
     While Not Eof(tplFile) Do
     Begin
         ReadLn(tplFile, tplStr);
@@ -79,4 +95,15 @@ Begin
 
     CloseFile(tplFile);
     CloseFile(tgtFile);
+End;
+
+
+{***************************************************************************}
+{ Main program                                                              }
+{***************************************************************************}
+Begin
+    HandleCommandLineParameters;
+    HandleInputStream;
+
+    GenerateTargetCode;
 End.

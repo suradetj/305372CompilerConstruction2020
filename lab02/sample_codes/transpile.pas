@@ -49,6 +49,21 @@ End;
 
 
 {---------------------------------------------------------------------------}
+{ Handle the input stream.                                                  }
+{---------------------------------------------------------------------------}
+Procedure HandleInputStream;
+Begin
+    AssignFile(srcFile, srcFileName);
+    Reset(srcFile);
+
+    { Read only one number from the source file}
+    Read(srcFile, numstr);
+
+    CloseFile(srcFile);
+End;
+
+
+{---------------------------------------------------------------------------}
 { Check if the numstr is out of the specified range.                        }
 {---------------------------------------------------------------------------}
 Function InRange(Const numstr : String) : Boolean;
@@ -87,6 +102,9 @@ Begin
     AssignFile(tgtFile, tgtFileName);
     Reset(tplFile);
     ReWrite(tgtFile);
+
+    { Substitute the number mark in the template with the number from the   }
+    { stream.                                                               }
     While Not Eof(tplFile) Do
     Begin
         ReadLn(tplFile, tplStr);
@@ -109,22 +127,14 @@ Begin
     CloseFile(tgtFile);
 End;
 
+
 {***************************************************************************}
 { Main program                                                              }
 {***************************************************************************}
 Begin
-
     HandleCommandLineParameters;
-
-    AssignFile(srcFile, srcFileName);
-    Reset(srcFile);
-
-    { Read only one number from the source file}
-    Read(srcFile, numstr);
-
-    CloseFile(srcFile);
+    HandleInputStream;
 
     AnalyzeSemantic;
-
     GenerateTargetCode;
 End.
